@@ -1,0 +1,23 @@
+\documentclass{article}
+
+\begin{document}
+
+<<chunk1, echo=FALSE, warning=FALSE>>=
+#install.packages("rvest")
+library("rvest")
+pop <- html("http://en.wikipedia.org/wiki/Ebola_virus_epidemic_in_West_Africa")
+df <- html_table(html_nodes(pop, "table")[[2]])
+df <- subset(df, select = c(Country, Cases , Deaths))
+df[ , colSums(is.na(df)) == 0]
+totalCase <- df[10, "Cases"]
+
+totalDeath <- df[10, "Deaths"]
+
+USAcase <- df[6, "Cases"]
+
+USADeath <- df[6, "Deaths"]
+@
+
+The World Health Organization (WHO) and respective governments have reported a total of \Sexpr{totalCase} suspected cases and \Sexpr{totalDeath} deaths, though the WHO believes that this substantially understates the magnitude of the outbreak. In the United States there has been \Sexpr{USAcase} reported cases and \Sexpr{USADeath} deaths.
+
+\end{document}
